@@ -197,10 +197,7 @@ public class pathAgentScript : MonoBehaviour {
                         // add to the opened list
                         open.Add(X.g_value + Vector3.Distance(X.cell, goal) + 0.1f * Random.value, X);
                     }
-
                 }
-
-
             }
         }
         isPathfinding = false;
