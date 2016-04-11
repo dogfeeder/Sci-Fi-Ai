@@ -17,6 +17,7 @@ public struct search_node
 
 public class pathAgentScript : MonoBehaviour {
 
+    public Transform player;
 	// the gris size
 	public float grid_width = 0.1f;
 	// the list of wall references
@@ -42,40 +43,34 @@ public class pathAgentScript : MonoBehaviour {
 	void Update () {
 		// if there was a mouse click
 		if (!isPathfinding && Input.GetButtonDown("Fire1")) {
-			// get the ray from the camera that passes through the mouse screen position on click
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			// define a plane at Y=0 to capture ray intersections
-			Plane hPlane = new Plane(Vector3.up, Vector3.zero);
-			// a variable to store the ray distance
-			float distance = 0;
-			// if the ray actually hits the plane
-			if (hPlane.Raycast(ray, out distance)){
-				// get the hit point
-				Vector3 point = ray.GetPoint(distance);
-				// if the point is in the maze
-				// if the point is not under a wall
-				if (!IsPointTooNearWall(point, grid_width)) {
-					Debug.Log("OK");
-					StartCoroutine(AStarCoroutine(point, grid_width));
-					//AStarPathSearch(point, grid_width);
-				} else {
-					Debug.Log("Wall");
-				}
+			// get the hit point
+            Vector3 point = player.position;
+			// if the point is in the maze
+			// if the point is not under a wall
+			if (!IsPointTooNearWall(point, grid_width)) {
+				Debug.Log("OK");
+				StartCoroutine(AStarCoroutine(point, grid_width));
+				//AStarPathSearch(point, grid_width);
+			} else {
+				Debug.Log("Wall");
 			}
 		}
 
-		if (path != null && path.Count > 0) {
-			// get the first
-			Vector3 pos = path.First.Value;
-			Debug.Log (pos.ToString());
-			pos.y = transform.position.y;
-			transform.Translate((pos-transform.position));
-			if (path.Count == 1) {
-				curr_pos = pos;
-			}
-			path.RemoveFirst();
-		}
+        if (path != null && path.Count > 0 && !moving)
+        {
+            // get the first
+            Vector3 pos = path.First.Value;
+            Debug.Log(pos.ToString());
+            pos.y = transform.position.y;
+            transform.Translate((pos - transform.position));
+            if (path.Count == 1)
+            {
+                curr_pos = pos;
+            }
+            path.RemoveFirst();
+        }
 	}
+
 
 	/*
 	 * This method checks a goal position against all of the walls to test
@@ -208,9 +203,8 @@ public class pathAgentScript : MonoBehaviour {
 
             }
         }
-
-		isPathfinding = false;
-		return null;
+        isPathfinding = false;
+        return null;
 	}
 
 	public bool isInList<T>(Vector3 p, SortedList<T,search_node> l) {
