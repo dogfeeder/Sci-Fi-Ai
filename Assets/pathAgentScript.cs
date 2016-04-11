@@ -56,7 +56,7 @@ public class pathAgentScript : MonoBehaviour {
 			}
 		}
 
-        if (path != null && path.Count > 0 && !moving)
+        if (path != null && path.Count > 0)
         {
             // get the first
             Vector3 pos = path.First.Value;
