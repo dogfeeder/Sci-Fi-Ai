@@ -28,6 +28,10 @@ public class pathAgentScript : MonoBehaviour {
 	private LinkedList<Vector3> path = null;
 	// mutex for A-star coroutine
 	private bool isPathfinding;
+    //animation bool
+    private bool isMoving = false;
+
+    Vector3 pos;
 
 	// Use this for initialization
 	void Start () {
@@ -58,16 +62,16 @@ public class pathAgentScript : MonoBehaviour {
 
         if (path != null && path.Count > 0)
         {
-            // get the first
-            Vector3 pos = path.First.Value;
+            pos = path.First.Value;
             Debug.Log(pos.ToString());
             pos.y = transform.position.y;
-            transform.Translate((pos - transform.position));
+            isMoving = true;
             if (path.Count == 1)
             {
                 curr_pos = pos;
             }
             path.RemoveFirst();
+            transform.Translate((pos - transform.position) * Time.deltaTime * 5);
         }
 	}
 
