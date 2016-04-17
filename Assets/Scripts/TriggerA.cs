@@ -12,7 +12,7 @@ public class TriggerA : MonoBehaviour {
 			// Get the script
 			AgentReceiver r = (AgentReceiver) obj.GetComponent(typeof(AgentReceiver));
 			// call the receiver post method
-			r.postMessage ("1");
+			r.postMessage ("0");
 		}
 
 	}
@@ -27,7 +27,7 @@ public class TriggerA : MonoBehaviour {
             // Get the script
             AgentReceiver r = (AgentReceiver)obj.GetComponent(typeof(AgentReceiver));
             // call the receiver post method
-            r.postMessage("1");
+            r.postMessage("0");
         }
 
     }

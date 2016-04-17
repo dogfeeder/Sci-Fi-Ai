@@ -11,7 +11,7 @@ public class TriggerC : MonoBehaviour {
 			// Get the script
 			AgentReceiver r = (AgentReceiver) obj.GetComponent(typeof(AgentReceiver));
 			// call the receiver post method
-			r.postMessage ("3");
+			r.postMessage ("2");
 		}
 		
 	}
