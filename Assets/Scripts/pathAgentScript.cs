@@ -29,7 +29,6 @@ public class pathAgentScript : MonoBehaviour {
 	// mutex for A-star coroutine
 	private bool isPathfinding;
     //animation bool
-    private bool isMoving = false;
 
     Vector3 pos;
 
@@ -65,13 +64,12 @@ public class pathAgentScript : MonoBehaviour {
             pos = path.First.Value;
             Debug.Log(pos.ToString());
             pos.y = transform.position.y;
-            isMoving = true;
             if (path.Count == 1)
             {
                 curr_pos = pos;
             }
             path.RemoveFirst();
-            transform.Translate((pos - transform.position) * Time.deltaTime * 5);
+            transform.Translate((pos - transform.position));
         }
 	}
 
@@ -198,7 +196,6 @@ public class pathAgentScript : MonoBehaviour {
                     // if not in the opened and closed lists 
                     if (!isInList<float>(X.cell, open) && !isInList<int>(X.cell, closed))
                     {
-                        // add to the opened list
                         open.Add(X.g_value + Vector3.Distance(X.cell, goal) + 0.1f * Random.value, X);
                     }
                 }
