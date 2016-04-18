@@ -27,32 +27,51 @@ public class AgentReceiver : MonoBehaviour {
 	float speed = 2.5f;
 
     private int[,] stateMachine;
-    private int[,] doorStateMachine = new int[,] { {1,0}, {-1,-1} };
-    private int[,] enemyStateMachine = new int[,] { {0,0}, {1,0} };
+    private int[,] doorStateMachine = new int[,] { { 1, 0 }, { 1, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
+    private int[,] door2StateMachine = new int[,] { { -1, -1 }, { -1, -1 }, { 1, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
+    private int[,] door3StateMachine = new int[,] { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { 1, 0 }, { -1, -1 } };
+    private int[,] enemyHallwayStateMachine = new int[,] { { 0, 0, 0 }, { 0, 1, 2 }, { 1, 1, 2 }, { 0, 1, 2 }, { 0, 2, 2 }, { 2, 2, 2 } };
+    private int[,] enemyRotateStateMachine = new int[,] { { 0, 0, 0 }, { 0, 1, 2 }, { 1, 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 }, { 2, 2, 2 } };
+    private int[,] enemyPathfindStateMachine = new int[,] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
 
     // Use this for initialization
-    void Start () {
-		speed = 2.5f;
+    void Start() {
+        speed = 2.5f;
 
         agent = gameObject;
         agentName = gameObject.name;
         navAgent = GetComponent<NavMeshAgent>();
-        
+
 
         if (agentName == "Door")
         {
             stateMachine = doorStateMachine;
         }
 
-        if (agentName == "Enemy")
+        if (agentName == "Door 2")
         {
-            stateMachine = enemyStateMachine;
+            stateMachine = door2StateMachine;
+        }
+
+        if (agentName == "Door 3")
+        {
+            stateMachine = door3StateMachine;
+        }
+
+        if (agentName == "Enemy Hallway")
+        {
+            stateMachine = enemyHallwayStateMachine;
+        }
+
+        if (agentName == "Enemy Rotate")
+        {
+            stateMachine = enemyRotateStateMachine;
         }
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (agentName == "Door")
+        if (agentName == "Door" || agentName == "Door 2" || agentName == "Door 3")
         {
             switch (caseNum)
             {
@@ -66,7 +85,7 @@ public class AgentReceiver : MonoBehaviour {
                     currentState = 1;
                     break;
             }
-        } else if (agentName == "Enemy")
+        } else if (agentName == "Enemy Hallway")
         {
             switch (caseNum)
             {
@@ -76,9 +95,37 @@ public class AgentReceiver : MonoBehaviour {
                     break;
 
                 case 1:
-                    chase();
+                    wobble();
                     currentState = 1;
                     break;
+                case 2:
+                    standBy();
+                    currentState = 2;
+                    break;
+            }
+        }
+        else if (agentName == "Enemy Rotate")
+        {
+            switch (caseNum)
+            {
+                case 0:
+                    patrol();
+                    currentState = 0;
+                    break;
+
+                case 1:
+                    patrol();
+                    flash();
+                    currentState = 1;
+                    break;
+
+                case 2:
+                    patrol();
+                    flash();
+                    alarm();
+                    currentState = 2;
+                    break;
+
             }
         }
     }
@@ -102,9 +149,6 @@ public class AgentReceiver : MonoBehaviour {
     public void postMessage(string m) {
 		// get the trigger as an index
 		int val = Convert.ToInt32(m);
-
-        Debug.Log(stateMachine);
-
         currentTrigger = val;
         caseNum = stateMachine[currentTrigger, currentState];
 
@@ -177,5 +221,25 @@ public class AgentReceiver : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, agent.transform.position, Time.deltaTime * speed);
         newDir = Vector3.RotateTowards(transform.forward, targetDir, 2.0f * Time.deltaTime, 0.0F);
         transform.rotation = Quaternion.LookRotation(newDir - agent.transform.position);
+    }
+
+    public void wobble()
+    {
+        Debug.Log("Wobble");
+    }
+
+    public void standBy() {
+        Debug.Log("Standby");
+    }
+
+    public void alarm()
+    {
+        Debug.Log("Alarm");
+
+    }
+
+    public void flash()
+    {
+        Debug.Log("Flash");
     }
 }

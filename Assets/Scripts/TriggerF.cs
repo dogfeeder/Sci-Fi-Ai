@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TriggerE : MonoBehaviour {
+public class TriggerF : MonoBehaviour
+{
 
     private bool triggered;
 
-	void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter(Collider other)
+    {
         if (!triggered)
         {
             // get the receiver objects
@@ -17,9 +19,9 @@ public class TriggerE : MonoBehaviour {
                 AgentReceiver r = (AgentReceiver)obj.GetComponent(typeof(AgentReceiver));
                 // call the receiver post method
                 triggered = true;
-                r.postMessage("4");
+                r.postMessage("5");
             }
         }
-
     }
+
 }
