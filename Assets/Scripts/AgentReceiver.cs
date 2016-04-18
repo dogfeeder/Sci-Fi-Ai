@@ -103,6 +103,8 @@ public class AgentReceiver : MonoBehaviour {
 		// get the trigger as an index
 		int val = Convert.ToInt32(m);
 
+        Debug.Log(stateMachine);
+
         currentTrigger = val;
         caseNum = stateMachine[currentTrigger, currentState];
 
