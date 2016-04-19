@@ -181,6 +181,7 @@ public class AgentReceiver : MonoBehaviour {
     }
 
 	public void patrol() {
+        stopFlash();
         //Move towards current patrol point
         navAgent.SetDestination(patrolPoints[currentPatrolPoint].transform.position);
 
@@ -193,25 +194,6 @@ public class AgentReceiver : MonoBehaviour {
             else
                 currentPatrolPoint++;
         }
-    }
-
-	public void attack() {
-
-	}
-
-
-    public void chase()
-    {
-        Debug.Log("Chase");
-
-        Vector3 targetDir;
-        Vector3 newDir;
-
-        // Rotating to follow player hasn't been finished.
-        targetDir = (transform.position);
-        transform.position = Vector3.MoveTowards(transform.position, agent.transform.position, Time.deltaTime * speed);
-        newDir = Vector3.RotateTowards(transform.forward, targetDir, 2.0f * Time.deltaTime, 0.0F);
-        transform.rotation = Quaternion.LookRotation(newDir - agent.transform.position);
     }
 
     public void wobble()
