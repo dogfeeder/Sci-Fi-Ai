@@ -26,6 +26,9 @@ public class AgentReceiver : MonoBehaviour {
 	private Vector3 target_patrol;
 	float speed = 2.5f;
 
+    //Used for enabling see through door
+    public GameObject[] pillars;
+
     private int[,] stateMachine;
     private int[,] doorStateMachine = new int[,] { { 1, 0 }, { 1, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
     private int[,] door2StateMachine = new int[,] { { -1, -1 }, { -1, -1 }, { 1, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
@@ -41,7 +44,7 @@ public class AgentReceiver : MonoBehaviour {
         agent = gameObject;
         agentName = gameObject.name;
         navAgent = GetComponent<NavMeshAgent>();
-
+        pillars = GameObject.FindGameObjectsWithTag("Pillars");
 
         if (agentName == "Door")
         {
@@ -132,18 +135,44 @@ public class AgentReceiver : MonoBehaviour {
 
     private void openDoor()
     {
-        MeshRenderer m = GetComponent<MeshRenderer>();
-        BoxCollider c = GetComponent<BoxCollider>();
-        m.enabled = false;
-        c.enabled = false;
+        if (agentName == "Door 3")
+        {
+            BoxCollider collider = GetComponent<BoxCollider>();
+            collider.enabled = false;
+
+            foreach (GameObject pillar in pillars)
+            {
+                pillar.GetComponent<MeshRenderer>().enabled = false;
+            }
+        }
+        else
+        {
+            MeshRenderer mesh = GetComponent<MeshRenderer>();
+            BoxCollider collider = GetComponent<BoxCollider>();
+            mesh.enabled = false;
+            collider.enabled = false;
+        }
     }
 
     private void closeDoor()
     {
-        MeshRenderer m = GetComponent<MeshRenderer>();
-        BoxCollider c = GetComponent<BoxCollider>();
-        m.enabled = true;
-        c.enabled = true;
+        if (agentName == "Door 3")
+        {
+            BoxCollider collider = GetComponent<BoxCollider>();
+            collider.enabled = true;
+
+            foreach (GameObject pillar in pillars)
+            {
+                pillar.GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+        else
+        {
+            MeshRenderer m = GetComponent<MeshRenderer>();
+            BoxCollider c = GetComponent<BoxCollider>();
+            m.enabled = true;
+            c.enabled = true;
+        }
     }
 
     public void postMessage(string m) {
