@@ -7,6 +7,8 @@ public class TriggerA : MonoBehaviour {
     public AudioClip open;
     public AudioClip closed;
 
+    public GameObject enemyPathfinder;
+
     void Start()
     {
         source = GetComponent<AudioSource>();
@@ -30,6 +32,7 @@ public class TriggerA : MonoBehaviour {
 
     void OnTriggerExit(Collider other)
     {
+        enemyPathfinder.GetComponent<pathAgentScript>().pathTrigger = true;
         source.clip = closed;
         source.Play();
         // get the receiver objects

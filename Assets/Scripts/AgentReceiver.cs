@@ -30,7 +30,6 @@ public class AgentReceiver : MonoBehaviour {
     private int[,] door3StateMachine = new int[,] { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { 1, 0 }, { -1, -1 } };
     private int[,] enemyHallwayStateMachine = new int[,] { { 0, 0, 0 }, { 0, 1, 2 }, { 1, 1, 2 }, { 0, 1, 2 }, { 0, 2, 2 }, { 2, 2, 2 } };
     private int[,] enemyRotateStateMachine = new int[,] { { 0, 0, 0 }, { 0, 1, 2 }, { 1, 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 }, { 2, 2, 2 } };
-    private int[,] enemyPathfindStateMachine = new int[,] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
 
     // Use this for initialization
     void Start() {
@@ -100,7 +99,7 @@ public class AgentReceiver : MonoBehaviour {
                     currentState = 1;
                     break;
                 case 2:
-                    standBy();
+                    kill();
                     currentState = 2;
                     break;
             }
@@ -220,7 +219,7 @@ public class AgentReceiver : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(new Vector3(UnityEngine.Random.Range(-1,1), UnityEngine.Random.Range(1, 1), UnityEngine.Random.Range(-5, 1)), new Vector3(0,0,0));
     }
 
-    public void standBy() {
+    public void kill() {
         Destroy(gameObject);
     }
 

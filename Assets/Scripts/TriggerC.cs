@@ -3,10 +3,12 @@ using System.Collections;
 
 public class TriggerC : MonoBehaviour {
     private bool triggered;
+    public GameObject enemyPathfinder;
 
-	void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter(Collider other) {
         if (!triggered)
         {
+            enemyPathfinder.GetComponent<pathAgentScript>().pathTrigger = true;
             AudioSource source = GetComponent<AudioSource>();
             source.Play();
 

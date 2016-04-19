@@ -5,11 +5,13 @@ public class TriggerF : MonoBehaviour
 {
 
     private bool triggered;
+    public GameObject enemyPathfinder;
 
     void OnTriggerEnter(Collider other)
     {
         if (!triggered)
         {
+            enemyPathfinder.GetComponent<pathAgentScript>().pathTrigger = true;
             AudioSource source = GetComponent<AudioSource>();
             source.Play();
             // get the receiver objects

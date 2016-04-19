@@ -28,10 +28,8 @@ public class pathAgentScript : MonoBehaviour {
 	private LinkedList<Vector3> path = null;
 	// mutex for A-star coroutine
 	private bool isPathfinding;
-    //animation bool
-
     Vector3 pos;
-
+    public bool pathTrigger;
 	// Use this for initialization
 	void Start () {
 		// Gets a reference to every wall in the scene
@@ -44,9 +42,12 @@ public class pathAgentScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// if there was a mouse click
-		if (!isPathfinding && Input.GetButtonDown("Fire1")) {
-			// get the hit point
+        // if there was a mouse click
+        //
+        //Input.GetButtonDown("Fire1")
+        if (!isPathfinding && pathTrigger) {
+            pathTrigger = false;
+            // get the hit point
             Vector3 point = player.position;
 			// if the point is in the maze
 			// if the point is not under a wall
