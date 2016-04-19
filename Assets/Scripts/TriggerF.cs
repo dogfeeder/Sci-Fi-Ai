@@ -10,6 +10,8 @@ public class TriggerF : MonoBehaviour
     {
         if (!triggered)
         {
+            AudioSource source = GetComponent<AudioSource>();
+            source.Play();
             // get the receiver objects
             GameObject[] receivers = GameObject.FindGameObjectsWithTag("DFAAgent");
             // for each receiver object

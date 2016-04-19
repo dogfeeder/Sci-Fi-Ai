@@ -7,6 +7,9 @@ public class TriggerC : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
         if (!triggered)
         {
+            AudioSource source = GetComponent<AudioSource>();
+            source.Play();
+
             // get the receiver objects
             GameObject[] receivers = GameObject.FindGameObjectsWithTag("DFAAgent");
             // for each receiver object
@@ -19,6 +22,5 @@ public class TriggerC : MonoBehaviour {
                 r.postMessage("2");
             }
         }
-		
 	}
 }

@@ -19,14 +19,9 @@ public class AgentReceiver : MonoBehaviour {
     public int currentPatrolPoint = 0;
     private float patrolPointDistance = 1.0f;
 
-    private Vector3 patrol_start;
-	private Vector3 patrol_end;
-	private Vector3 hide_pos;
-	private Vector3 centre_pos;
-	private Vector3 target_patrol;
 	float speed = 2.5f;
 
-    //Used for enabling see through door
+    //Used for enabling/disabling see-through door meshes
     public GameObject[] pillars;
 
     private int[,] stateMachine;
@@ -44,6 +39,7 @@ public class AgentReceiver : MonoBehaviour {
         agent = gameObject;
         agentName = gameObject.name;
         navAgent = GetComponent<NavMeshAgent>();
+
         pillars = GameObject.FindGameObjectsWithTag("Pillars");
 
         if (agentName == "Door")
@@ -99,6 +95,8 @@ public class AgentReceiver : MonoBehaviour {
 
                 case 1:
                     wobble();
+                    patrol();
+                    flash();
                     currentState = 1;
                     break;
                 case 2:
@@ -125,7 +123,7 @@ public class AgentReceiver : MonoBehaviour {
                 case 2:
                     patrol();
                     flash();
-                    alarm();
+                    wobble();
                     currentState = 2;
                     break;
 
@@ -184,7 +182,6 @@ public class AgentReceiver : MonoBehaviour {
     }
 
 	public void patrol() {
-        Debug.Log("patrolling");
         //Move towards current patrol point
         navAgent.SetDestination(patrolPoints[currentPatrolPoint].transform.position);
 
@@ -199,42 +196,8 @@ public class AgentReceiver : MonoBehaviour {
         }
     }
 
-	public void hide() {
-		Vector3 targetDir;
-		Vector3 newDir;
-		// if at centre position
-		if (Vector3.Distance(transform.position, centre_pos) < 0.1f) {
-			target_patrol = hide_pos;
-		}
-		// if at hide position
-		if (Vector3.Distance(transform.position, hide_pos) < 0.1f) {
-			targetDir = centre_pos - transform.position;
-			newDir = Vector3.RotateTowards (transform.forward, targetDir, 2.0f * Time.deltaTime, 0.0F);
-			transform.rotation = Quaternion.LookRotation (newDir);
-		}
-		targetDir = target_patrol - transform.position;
-		newDir = Vector3.RotateTowards (transform.forward, targetDir, 2.0f * Time.deltaTime, 0.0F);
-		transform.rotation = Quaternion.LookRotation (newDir);
-		transform.position = Vector3.MoveTowards (transform.position, target_patrol, Time.deltaTime * speed);
-	}
-
 	public void attack() {
-        Debug.Log("attacking");
-		Vector3 targetDir;
-		Vector3 newDir;
-		// if at start
-		if (Vector3.Distance(transform.position, hide_pos) < 0.1f) {
-			target_patrol = centre_pos;
-		} 
-		if (Vector3.Distance(transform.position, centre_pos) < 0.1f) {
-			target_patrol = Camera.main.transform.position;
-			target_patrol.y = 9.5f;
-		}
 
-		targetDir = target_patrol - transform.position;
-		newDir = Vector3.RotateTowards (transform.forward, targetDir, 2.0f * Time.deltaTime, 0.0F);
-		transform.rotation = Quaternion.LookRotation (newDir);
-		transform.position = Vector3.MoveTowards (transform.position, target_patrol, Time.deltaTime * speed);
 	}
 
 
@@ -254,21 +217,21 @@ public class AgentReceiver : MonoBehaviour {
 
     public void wobble()
     {
-        Debug.Log("Wobble");
+        transform.rotation = Quaternion.LookRotation(new Vector3(UnityEngine.Random.Range(-1,1), UnityEngine.Random.Range(1, 1), UnityEngine.Random.Range(-5, 1)), new Vector3(0,0,0));
     }
 
     public void standBy() {
-        Debug.Log("Standby");
-    }
-
-    public void alarm()
-    {
-        Debug.Log("Alarm");
-
+        Destroy(gameObject);
     }
 
     public void flash()
     {
-        Debug.Log("Flash");
+        GetComponent<Light>().enabled = true;
+    }
+
+
+    public void stopFlash()
+    {
+        GetComponent<Light>().enabled = false;
     }
 }

@@ -3,8 +3,19 @@ using System.Collections;
 
 public class TriggerB : MonoBehaviour {
 
+    AudioSource source;
+    public AudioClip open;
+    public AudioClip closed;
+
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
     void OnTriggerEnter(Collider other)
     {
+        source.clip = open;
+        source.Play();
         // get the receiver objects
         GameObject[] receivers = GameObject.FindGameObjectsWithTag("DFAAgent");
         // for each receiver object
@@ -20,6 +31,8 @@ public class TriggerB : MonoBehaviour {
 
     void OnTriggerExit(Collider other)
     {
+        source.clip = closed;
+        source.Play();
         // get the receiver objects
         GameObject[] receivers = GameObject.FindGameObjectsWithTag("DFAAgent");
         // for each receiver object
